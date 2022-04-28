@@ -4,17 +4,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.User;
+import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
-
 import java.util.List;
+
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
     private final UserService userService;
+    private final RoleService roleService;
 
-    public AdminController(UserService userService) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
 
@@ -25,33 +28,37 @@ public class AdminController {
         return "admin";
     }
 
-    @GetMapping("/create")
-    public String createUserForm(User user) {
+    @GetMapping("create")
+    public String createUserForm(@ModelAttribute("user") User user, Model model) {
+        model.addAttribute("roles", roleService.findAllRole());
         return "create";
     }
 
-    @PostMapping("/create")
-    public String createUser(@ModelAttribute("user") User user) {
+    @PostMapping("create")
+    public String createUser(@ModelAttribute("user") User user
+            , @RequestParam(value = "roles") String[] roles) {
+        user.setRoles(roleService.getRoles(roles));
         userService.saveUser(user);
-        return "admin";
+        return "redirect:/admin";
     }
 
     @GetMapping("delete/{id}")
     public String deleteUser(@PathVariable("id") Long id) {
         userService.deleteById(id);
-        return "admin";
+        return "redirect:/admin";
     }
 
-    @GetMapping("/update/{id}")
+    @GetMapping("update/{id}")
     public String updateUserForm(@PathVariable("id") Long id, Model model) {
         User user = userService.findById(id);
         model.addAttribute("user", user);
         return "update";
     }
 
-    @PostMapping("/update")
+    @PostMapping("update")
     public String updateUser(@ModelAttribute("user") User user) {
         userService.updateUser(user);
-        return "admin";
+        return "redirect:/admin";
     }
+
 }

@@ -1,17 +1,12 @@
 package ru.kata.spring.boot_security.demo.dao;
 
-
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -20,23 +15,26 @@ public class UserDaoImpl implements UserDao {
     private EntityManager entityManager;
 
 
-    @Transactional
+
     @Override
     public void saveUser(User user) {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String encoded = bCryptPasswordEncoder.encode(user.getPassword());
+        user.setPassword(encoded);
         entityManager.persist(user);
         entityManager.close();
 
     }
 
 
-    @Transactional
+
     @Override
     public List<User> findAll() {
         return entityManager.createQuery("SELECT user FROM User user", User.class).getResultList();
     }
 
 
-    @Transactional
+
     @Override
     public void deleteById(long id) {
         User user = entityManager.find(User.class, id);
@@ -46,24 +44,27 @@ public class UserDaoImpl implements UserDao {
     }
 
 
-    @Transactional
+
     @Override
     public User findById(long id) {
         return entityManager.find(User.class, id);
     }
 
 
-    @Transactional
+
     @Override
     public void updateUser(User user) {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String encoded = bCryptPasswordEncoder.encode(user.getPassword());
+        user.setPassword(encoded);
         entityManager.merge(user);
     }
 
     @Override
-    public User findByUsername(String name) {
+    public User findByUsername(String role) {
         return entityManager.createQuery(
-                        "SELECT user FROM User user WHERE user.name =:name", User.class)
-                .setParameter("name", name)
+                        "SELECT user FROM User user WHERE user.name =:role", User.class)
+                .setParameter("role", role)
                 .getSingleResult();
     }
 
