@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -24,15 +23,15 @@ public class User implements UserDetails {
     private String password;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"),
-    inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
 
     public String getLastName() {
         return lastName;
     }
 
     public void setLastName(String lastName) {
-       this.lastName = lastName;
+        this.lastName = lastName;
     }
 
     public User() {
@@ -107,11 +106,11 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-  @Override
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-       User user = (User) o;
+        User user = (User) o;
         return id == user.id && name.equals(user.name) && lastName.equals(user.lastName);
     }
 

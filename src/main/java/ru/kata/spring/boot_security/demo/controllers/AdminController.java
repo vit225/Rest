@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
+
+import java.security.Principal;
 import java.util.List;
 
 
@@ -22,21 +24,22 @@ public class AdminController {
 
 
     @GetMapping()
-    public String findAll(Model model) {
+    public String findAll(Principal principal, Model model) {
+        User user = userService.findByUsername(principal.getName());
+        model.addAttribute("user", user);
         List<User> users = userService.findAll();
         model.addAttribute("users", users);
         return "admin";
     }
 
     @GetMapping("create")
-    public String createUserForm(@ModelAttribute("user") User user, Model model) {
-        model.addAttribute("roles", roleService.findAllRole());
+    public String createUserForm(@ModelAttribute("user") User user) {
         return "create";
     }
 
     @PostMapping("create")
     public String createUser(@ModelAttribute("user") User user
-            , @RequestParam(value = "roles") String[] roles) {
+            , @RequestParam(value = "role") String[] roles) {
         user.setRoles(roleService.getRoles(roles));
         userService.saveUser(user);
         return "redirect:/admin";
@@ -56,7 +59,9 @@ public class AdminController {
     }
 
     @PostMapping("update")
-    public String updateUser(@ModelAttribute("user") User user) {
+    public String updateUser(@ModelAttribute("user") User user
+            , @RequestParam(value = "role") String[] roles) {
+        user.setRoles(roleService.getRoles(roles));
         userService.updateUser(user);
         return "redirect:/admin";
     }

@@ -3,6 +3,7 @@ package ru.kata.spring.boot_security.demo.dao;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import ru.kata.spring.boot_security.demo.models.User;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -13,7 +14,6 @@ public class UserDaoImpl implements UserDao {
 
     @PersistenceContext()
     private EntityManager entityManager;
-
 
 
     @Override
@@ -27,12 +27,10 @@ public class UserDaoImpl implements UserDao {
     }
 
 
-
     @Override
     public List<User> findAll() {
         return entityManager.createQuery("SELECT user FROM User user", User.class).getResultList();
     }
-
 
 
     @Override
@@ -44,12 +42,10 @@ public class UserDaoImpl implements UserDao {
     }
 
 
-
     @Override
     public User findById(long id) {
         return entityManager.find(User.class, id);
     }
-
 
 
     @Override
@@ -61,10 +57,10 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User findByUsername(String role) {
+    public User findByUsername(String name) {
         return entityManager.createQuery(
-                        "SELECT user FROM User user WHERE user.name =:role", User.class)
-                .setParameter("role", role)
+                        "SELECT user FROM User user WHERE user.name =:name", User.class)
+                .setParameter("name", name)
                 .getSingleResult();
     }
 
