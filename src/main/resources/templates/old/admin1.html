@@ -1,0 +1,39 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--    <h1>-->
+<!--        <td th:text="${user.name}"></td>-->
+<!--        </tr>, welcome spring boot security page!-->
+<!--    </h1>-->
+<!--    <h2>Users</h2>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Users</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<table>-->
+<!--    <thead>-->
+<!--    <tr>-->
+<!--        <th>Id</th>-->
+<!--        <th>Name</th>-->
+<!--        <th>Last name</th>-->
+<!--        <th>Password</th>-->
+<!--        <th>Role</th>-->
+<!--    </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--    <tr th:each="user : ${users}">-->
+<!--        <td th:text="${user.getId}"></td>-->
+<!--        <td th:text="${user.getName}"></td>-->
+<!--        <td th:text="${user.getLastName}"></td>-->
+<!--        <td th:text="${user.getRoles}"></td>-->
+<!--        <td><a th:href="@{admin/update/{id}(id=${user.id})}">Edit</a></td>-->
+<!--        <td><a th:href="@{admin/delete/{id}(id=${user.id})}">Delete</a></td>-->
+<!--    </tr>-->
+<!--    </tbody>-->
+<!--</table>-->
+<!--<p><a href="/admin/create">Создать пользователя</a></p>-->
+<!--<form th:action="@{/logout}" method="post">-->
+<!--    <input type="submit" value="Logout">-->
+<!--</form>-->
+<!--</body>-->
+<!--</html>-->

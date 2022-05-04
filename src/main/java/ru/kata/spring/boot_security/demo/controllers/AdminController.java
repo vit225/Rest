@@ -33,7 +33,8 @@ public class AdminController {
     }
 
     @GetMapping("create")
-    public String createUserForm(@ModelAttribute("user") User user) {
+    public String createUserForm(User user,Model model) {
+        model.addAttribute("user",user);
         return "create";
     }
 
@@ -46,10 +47,11 @@ public class AdminController {
     }
 
     @GetMapping("delete/{id}")
-    public String deleteUser(@PathVariable("id") Long id) {
+    public String deleteUserForm(@PathVariable("id") Long id) {
         userService.deleteById(id);
         return "redirect:/admin";
     }
+
 
     @GetMapping("update/{id}")
     public String updateUserForm(@PathVariable("id") Long id, Model model) {
