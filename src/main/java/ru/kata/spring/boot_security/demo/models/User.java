@@ -29,6 +29,8 @@ public class User implements UserDetails {
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
+    @Transient
+    private String role;
 
 
     public String getLastName() {
@@ -41,6 +43,15 @@ public class User implements UserDetails {
 
     public User() {
 
+    }
+
+    public User(String name, String lastName, String password, String email, byte age, Set<Role> roles) {
+        this.name = name;
+        this.lastName = lastName;
+        this.password = password;
+        this.email = email;
+        this.age = age;
+        this.roles = roles;
     }
 
     public User(int id, String name) {
@@ -91,6 +102,19 @@ public class User implements UserDetails {
 
     public void setAge(byte age) {
         this.age = age;
+    }
+
+    public String getRole() {
+        role = "";
+        for (Role r : roles) {
+           role += r.getName_role();
+           role += " ";
+        }
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     @Override

@@ -8,22 +8,13 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 </head>
 <body>
 
 <!--      Navbar-->
 
 <nav class="navbar navbar-dark bg-dark">
-    <div class="col-11">
-        <p class="text-light bg-dark">
-        <td th:text="${user.email}"></td>
-        with roles:
-        <td th:text="${user.roles}"></td>
-        </p>
-    </div>
-    <div class="col-1">
-        <a class="badge" style="color: grey" href="/logout">Logout</a>
-    </div>
 </nav>
 <!--     Left block-->
 <div class="container-fluid mt-3">
@@ -60,13 +51,13 @@
                                                     <th scope="col">Role</th>
                                                 </tr>
                                                 </thead>
-                                                <tbody>
-                                                <td th:text="${user.getId}"></td>
-                                                <td th:text="${user.getName}"></td>
-                                                <td th:text="${user.getLastName}"></td>
-                                                <td th:text="${user.getAge}"></td>
-                                                <td th:text="${user.getEmail}"></td>
-                                                <td th:text="${user.getRoles}"></td>
+                                                <tbody id="tbodyLeft">
+                                                <!--                                                <td th:text="${user.getId}"></td>-->
+                                                <!--                                                <td th:text="${user.getName}"></td>-->
+                                                <!--                                                <td th:text="${user.getLastName}"></td>-->
+                                                <!--                                                <td th:text="${user.getAge}"></td>-->
+                                                <!--                                                <td th:text="${user.getEmail}"></td>-->
+                                                <!--                                                <td th:text="${user.getRoles}"></td>-->
                                                 </tbody>
                                             </table>
                                         </div>
@@ -80,6 +71,8 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript" src="../userJS.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
@@ -89,5 +82,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+
+
 </body>
 </html>
