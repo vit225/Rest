@@ -1,13 +1,8 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
-
 import java.security.Principal;
 import java.util.List;
 
@@ -17,11 +12,10 @@ import java.util.List;
 public class MyRestController {
 
     private final UserService userService;
-    private final RoleService roleService;
 
-    public MyRestController(UserService userService, RoleService roleService) {
+
+    public MyRestController(UserService userService) {
         this.userService = userService;
-        this.roleService = roleService;
     }
 
     @GetMapping("/users")
@@ -36,20 +30,14 @@ public class MyRestController {
 
     @PutMapping("/update")
     public User updateUser(@RequestBody User user) {
-        User userOld = userService.findById(user.getId());
-        userOld.setName(user.getName());
-        userOld.setLastName(user.getLastName());
-        userOld.setAge(user.getAge());
-        userOld.setEmail(user.getEmail());
-        userOld.setPassword(user.getPassword());
-        userService.updateUser(userOld);
+        userService.updateUser(user);
         return user;
     }
 
     @DeleteMapping("/delete/{id}")
     public String deleteUserForm(@PathVariable("id") Long id) {
         userService.deleteById(id);
-        return "Пользователь с id " + id + ",был удален";
+        return "";
     }
 
     @PostMapping("/create")

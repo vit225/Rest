@@ -52,12 +52,6 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody id="tbodyLeft">
-                                                <!--                                                <td th:text="${user.getId}"></td>-->
-                                                <!--                                                <td th:text="${user.getName}"></td>-->
-                                                <!--                                                <td th:text="${user.getLastName}"></td>-->
-                                                <!--                                                <td th:text="${user.getAge}"></td>-->
-                                                <!--                                                <td th:text="${user.getEmail}"></td>-->
-                                                <!--                                                <td th:text="${user.getRoles}"></td>-->
                                                 </tbody>
                                             </table>
                                         </div>
@@ -83,6 +77,43 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 
+<script>
+    ///////////////////////////TOPNAVBAR////////////////////////////////
+const url = "http://localhost:8080/api/"
+const navTop = document.querySelector(".navbar.navbar-dark.bg-dark");
+let temp = '';
+fetch(url+"user")
+    .then(res => res.json())
+    .then(user => {
+        temp = `<div class="col-11">
+       <p class="text-light bg-dark">
+        ${user.email}
+        with roles:
+        ${user.roles.map(e => e.name_role)}
+        </p>
+    </div>
+    <div class="col-1">
+        <a class="badge" style="color: grey" href="/logout">Logout</a>
+    </div>`;
+        navTop.innerHTML = temp;
+    })
+////////////////////////////////////////////////////////////////
+//////////////////////LEFTNAVBAR///////////////////////////////
+const tbodyLeftUser = document.getElementById("tbodyLeft")
+let resultLeftUser = ""
+
+fetch(url + "user")
+    .then(response => response.json()).then(user => {
+    resultLeftUser += `<tr>
+                         <td>${user.id}</td>
+                         <td>${user.name}</td>
+                         <td>${user.lastName}</td>
+                         <td>${user.age}</td>
+                         <td>${user.email}</td>
+                         <td>${user.roles.map(e => e.name_role)}</td></tr>`;
+
+    tbodyLeftUser.innerHTML = resultLeftUser
+})</script>
 
 </body>
 </html>

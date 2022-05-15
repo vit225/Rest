@@ -8,8 +8,20 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
 </head>
 <body>
+
+<div id="divv">
+
+
+</div>
+
 
 <!--      Navbar-->
 <nav class="navbar navbar-dark bg-dark">
@@ -91,8 +103,7 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="mx-auto" style="width: 300px;">
-                                                                <form class="formModalW" action="#"
-                                                                >
+                                                                <form id="edit1" class="formModalW">
                                                                     <div class="form-group">
                                                                         <div class="mx-auto"
                                                                              style="width: 100px;">
@@ -164,7 +175,7 @@
                                                                          style="width: 100px;">
                                                                         <label>Role</label>
                                                                     </div>
-                                                                    <select id="rolesEdit" class="custom-select"
+                                                                    <select id="roles" class="custom-select"
                                                                             multiple="multiple"
                                                                             size="2" name="role">
 
@@ -179,7 +190,8 @@
                                                                                 class="btn btn-secondary"
                                                                                 data-dismiss="modal">Close
                                                                         </button>
-                                                                        <button id="update" type="button"
+                                                                        <button id="update"
+                                                                                type="button"
                                                                                 class="btn btn-primary">Edit
                                                                         </button>
                                                                     </div>
@@ -309,7 +321,7 @@
                                         <div class="card-body">
 
                                             <div class="mx-auto" style="width: 300px;">
-                                                <form class="formNewUser" action="/admin/create" method="post">
+                                                <form class="formNewUser" >
                                                     <div class="form-group">
                                                         <div class="form-group">
                                                             <div class="mx-auto" style="width: 100px;">
@@ -353,7 +365,8 @@
                                                         <div class="mx-auto" style="width: 100px;">
                                                             <label>Role</label>
                                                         </div>
-                                                        <select class="custom-select" multiple="multiple" size="2"
+                                                        <select id="roleNew" class="custom-select" multiple="multiple"
+                                                                size="2"
                                                                 name="role">
                                                             <option value="ADMIN">ADMIN</option>
                                                             <option selected value="USER">USER</option>
@@ -410,12 +423,7 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
+
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
@@ -424,28 +432,27 @@
 
 
     const url = "http://localhost:8080/api/"
-
-
-///////////////////////ALL USERS/////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////ALL USERS///////////////////////////////////////////////////
     const tBodyAllUsers = document.querySelector("#tbAllUsers")
     let result = ""
+
     fetch(url + "users")
         .then(response => response.json()).then(users => {
         users.forEach(user => {
-            result += `<tr>
+            result += `<tr id="${user.id}">
                          <td>${user.id}</td>
                          <td>${user.name}</td>
                          <td>${user.lastName}</td>
                          <td>${user.age}</td>
                          <td>${user.email}</td>
-                         <td>${user.role}</td>
+                         <td>${user.roles.map(e => e.name_role)}</td>
                          <td> <button id= "edit" type="button" class=" btnEdit btn-info " data-toggle="modal" > Edit</button></td>
-                         <td> <button id = "delete"  type="button" class="btnEdit btn-danger" data-toggle="modal" >Delete</button> </td></tr>
-                            </tr>`
+                         <td> <button id = "delete"  type="button" class="btnEdit btn-danger" data-toggle="modal" >Delete</button> </td></tr> `
+
         })
         tBodyAllUsers.innerHTML = result
     })
-
 
     const on = (element, ev, selector, handler) => {
         element.addEventListener(ev, e => {
@@ -455,8 +462,11 @@
         })
     }
 
+    let roleList = [{id: 1, name_role: "ADMIN"}, {id: 2, name_role: "USER"}]
+    let roles
 
-////////////////////////UPDATE/////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////UPDATE/////////////////////////////////////////////
     const idEdit = document.getElementById("id")
     const lastNameEdit = document.getElementById("lastName")
     const ageEdit = document.getElementById("age")
@@ -477,47 +487,56 @@
         lastNameEdit.value = lastNameEd
         ageEdit.value = ageEd
         emailEdit.value = emailEd
+        passwordEdit.value = ""
 
         myModalEdit.show()
-    })
 
-    const update = document.getElementById("update")
-    update.addEventListener("click", e => {
-        e.preventDefault()
-        fetch(url + "update", {
-            method: "PUT",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                id: idEdit.value,
-                name: nameEdit.value,
-                lastName: lastNameEdit.value,
-                age: ageEdit.value,
-                email: emailEdit.value,
-                password: passwordEdit.value,
+
+        const update = document.getElementById("update")
+        roles = []
+        update.addEventListener("click", e => {
+            e.preventDefault()
+            let options = document.getElementById("roles").options
+            roles = []
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].selected) {
+                    roles.push(roleList[i]);
+
+                }
+            }
+            fetch(url + "update", {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: idEdit.value,
+                    name: nameEdit.value,
+                    lastName: lastNameEdit.value,
+                    age: ageEdit.value,
+                    email: emailEdit.value,
+                    password: passwordEdit.value,
+                    roles: roles
+                })
             })
+                .then(res => res.json())
+
+            myModalEdit.hide();
+
+            $("#" + idEdit.value).html(`<td>${idEdit.value}</td>
+            <td>${nameEdit.value}</td>
+        <td>${lastNameEdit.value}</td>
+            <td>${ageEdit.value}</td>
+            <td>${emailEdit.value}</td>
+            <td>${roles.map(e => e.name_role)}</td>
+            <td> <button id= "edit" type="button" class=" btnEdit btn-info " data-toggle="modal" > Edit</button></td>
+            <td> <button id = "delete"  type="button" class="btnEdit btn-danger" data-toggle="modal" >Delete</button> </td>`
+            );
         })
-            .then(res => res.json())
-            .then(() => location.reload())
     })
 
-
-////////////////////DELETE////////////////////////////////////////////////////
-    const myModalDelete = new bootstrap.Modal(document.querySelector("#modalD"))
-    const idDelete = document.getElementById("idD")
-    const nameDelete = document.getElementById("nameD")
-    const lastNameDelete = document.getElementById("lastNameD")
-    const ageDelete = document.getElementById("ageD")
-    const emailDelete = document.getElementById("emailD")
-    on(document, "click", "#del", () => {
-        let id = idDelete.value
-        fetch(url + "delete/" + id, {
-            method: "DELETE"
-        })
-            .then(res => res.json())
-            .then(() => location.reload())
-    })
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////DELETE/////////////////////////////////////////////////////////////
     on(document, "click", "#delete", e => {
         const line = e.target.parentNode.parentNode
         const idDe = line.children[0].innerHTML
@@ -532,9 +551,26 @@
         emailDelete.value = emailDe
         myModalDelete.show()
     })
+    const myModalDelete = new bootstrap.Modal(document.querySelector("#modalD"))
+    const idDelete = document.getElementById("idD")
+    const nameDelete = document.getElementById("nameD")
+    const lastNameDelete = document.getElementById("lastNameD")
+    const ageDelete = document.getElementById("ageD")
+    const emailDelete = document.getElementById("emailD")
+    on(document, "click", "#del", (e) => {
+        e.preventDefault()
+        fetch(url + "delete/" + idDelete.value, {
+            method: "DELETE"
+        })
+
+        document.getElementById(idDelete.value).remove()
+        myModalDelete.hide()
 
 
-////////////////////////CREATE/////////////////////////////////////////////////
+    })
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////CREATE/////////////////////////////////////////////////
     const nameNew = document.getElementById("nameN")
     const lastNameNew = document.getElementById("lastNameN")
     const ageNew = document.getElementById("ageN")
@@ -543,6 +579,14 @@
     const add = document.getElementById("add")
     add.addEventListener("click", e => {
         e.preventDefault()
+        let options = document.getElementById("roleNew").options
+        roles = []
+        for (let i = 0; i < options.length; i++) {
+            if (options[i].selected) {
+                roles.push(roleList[i]);
+
+            }
+        }
         fetch(url + "create", {
             method: "POST",
             headers: {
@@ -554,15 +598,15 @@
                 age: ageNew.value,
                 email: emailNew.value,
                 password: passwordNew.value,
-
+                roles: roles
             })
         })
-            .then(res => res.json())
-            .then(res => location.reload())
+
+            .then(() => location.reload())
+
     })
-
-
-///////////////////////////TOPNAVBAR////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
+    ///////////////////////////TOPNAVBAR////////////////////////////////
     const navTop = document.querySelector(".navbar.navbar-dark.bg-dark");
     let temp = '';
     fetch("http://localhost:8080/api/user")
@@ -572,7 +616,7 @@
        <p class="text-light bg-dark">
         ${user.email}
         with roles:
-        ${user.role}
+        ${user.roles.map(e => e.name_role)}
         </p>
     </div>
     <div class="col-1">
@@ -581,8 +625,8 @@
             navTop.innerHTML = temp;
         })
 
-
-//////////////////////LEFTNAVBAR///////////////////////////////
+    ////////////////////////////////////////////////////////////////
+    //////////////////////LEFTNAVBAR///////////////////////////////
     const tbodyLeftUser = document.getElementById("tbodyLeft")
     let resultLeftUser = ""
 
@@ -594,7 +638,7 @@
                          <td>${user.lastName}</td>
                          <td>${user.age}</td>
                          <td>${user.email}</td>
-                         <td>${user.role}</td></tr>`;
+                         <td>${user.roles.map(e => e.name_role)}</td></tr>`;
 
         tbodyLeftUser.innerHTML = resultLeftUser
     })
