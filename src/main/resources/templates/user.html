@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <script type="text/javascript"  src="user.js"></script>
 </head>
 <body>
 
@@ -66,7 +66,6 @@
     </div>
 </div>
 
-<script type="text/javascript" th:src="@{/js/userJS.js}"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
@@ -77,43 +76,6 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 
-<script>
-    ///////////////////////////TOPNAVBAR////////////////////////////////
-const url = "http://localhost:8080/api/"
-const navTop = document.querySelector(".navbar.navbar-dark.bg-dark");
-let temp = '';
-fetch(url+"user")
-    .then(res => res.json())
-    .then(user => {
-        temp = `<div class="col-11">
-       <p class="text-light bg-dark">
-        ${user.email}
-        with roles:
-        ${user.roles.map(e => e.name_role)}
-        </p>
-    </div>
-    <div class="col-1">
-        <a class="badge" style="color: grey" href="/logout">Logout</a>
-    </div>`;
-        navTop.innerHTML = temp;
-    })
-////////////////////////////////////////////////////////////////
-//////////////////////LEFTNAVBAR///////////////////////////////
-const tbodyLeftUser = document.getElementById("tbodyLeft")
-let resultLeftUser = ""
-
-fetch(url + "user")
-    .then(response => response.json()).then(user => {
-    resultLeftUser += `<tr>
-                         <td>${user.id}</td>
-                         <td>${user.name}</td>
-                         <td>${user.lastName}</td>
-                         <td>${user.age}</td>
-                         <td>${user.email}</td>
-                         <td>${user.roles.map(e => e.name_role)}</td></tr>`;
-
-    tbodyLeftUser.innerHTML = resultLeftUser
-})</script>
 
 </body>
 </html>

@@ -40,8 +40,8 @@ public class AdminController {
 
     @PostMapping("create")
     public String createUser(@ModelAttribute("user") User user
-            , @RequestParam(value = "role") String[] roles) {
-        user.setRoles(roleService.getRoles(roles));
+            , @RequestParam(value = "role") String[] arrRoles) {
+        user.setRoles(roleService.addRole(arrRoles));
         userService.saveUser(user);
         return "redirect:/admin";
     }
@@ -62,8 +62,8 @@ public class AdminController {
 
     @PostMapping("update")
     public String updateUser(@ModelAttribute("user") User user
-            , @RequestParam(value = "role") String[] roles) {
-        user.setRoles(roleService.getRoles(roles));
+            , @RequestParam(value = "role") String[] arrRoles) {
+        user.setRoles(roleService.addRole(arrRoles));
         userService.updateUser(user);
         return "redirect:/admin";
     }

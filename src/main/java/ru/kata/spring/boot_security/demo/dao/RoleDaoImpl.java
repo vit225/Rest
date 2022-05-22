@@ -12,50 +12,16 @@ import java.util.Set;
 @Repository
 public class RoleDaoImpl implements RoleDao {
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    @Override
-    public void saveRole(Role role) {
-        entityManager.persist(role);
-    }
-
-    @Override
-    public Set<Role> findAllRole() {
-        List<Role> list = entityManager.createQuery("SELECT role FROM Role role", Role.class).getResultList();
-        return new HashSet<>(list);
-    }
-
-    @Override
-    public void deleteById(long id) {
-        Role role = entityManager.find(Role.class, id);
-        if (role != null) {
-            entityManager.remove(role);
+    public Set<Role> addRole (String [] arrRoles) {
+        Set<Role> roles =  new HashSet<>();
+        for (String string : arrRoles) {
+            if (string.equals("ADMIN")) {
+                roles.add(new Role(1L, "ADMIN"));
+            }
+            if (string.equals("USER")) {
+                roles.add(new Role(2L, "USER"));
+            }
         }
-    }
-
-    @Override
-    public Role findById(long id) {
-        return entityManager.find(Role.class, id);
-    }
-
-    @Override
-    public void updateRole(Role role) {
-        entityManager.merge(role);
-    }
-
-    @Override
-    public Role getRoleByName(String name_role) {
-        return entityManager.createQuery(
-                "SELECT r from Role r where r.name_role=:name_role", Role.class
-        ).setParameter("name_role", name_role).getSingleResult();
-    }
-
-    public Set<Role> getRoles(String[] roleNames) {
-        Set<Role> roleSet = new HashSet<>();
-        for (String role : roleNames) {
-            roleSet.add(getRoleByName(role));
-        }
-        return roleSet;
+        return roles;
     }
 }
